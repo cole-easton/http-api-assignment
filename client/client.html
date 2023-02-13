@@ -7,13 +7,17 @@
   <script>
     window.onload = _ => {
       const typeElement = document.querySelector("#type");
-      const pageELement = document.querySelector("#page");
+      const pageElement = document.querySelector("#page");
+      const contentElement = document.querySelector("content");
       document.querySelector("#send").onlclick = _ => {
-          fetch(url, {
+          fetch(pageElement.value, {
           method,
           headers: {
-            'Accept': 'application/json'
+            'Accept': typeElement.value
           },
+      }).then(response => {
+        console.log(response);
+        content.textContent = response;
       });
       }
     }
@@ -33,7 +37,7 @@
     </select>
     <select id="type">
       <option value="application/json">JSON</option>
-      <option value="text/xml">XML</option>
+      <option value="application/xml">XML</option>
     </select>
     <button id="send">Send</button>
   </section>
