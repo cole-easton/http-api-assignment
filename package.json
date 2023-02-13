@@ -1,0 +1,26 @@
+{
+  "name": "http-api-assignment",
+  "version": "1.0.0",
+  "description": "Assignment for IGME 430",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node ./src/server.js",
+    "pretest": "eslint ./src --fix",
+    "test": "echo \"Tests complete\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cole-easton/http-api-assignment.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cole-easton/http-api-assignment/issues"
+  },
+  "homepage": "https://github.com/cole-easton/http-api-assignment#readme",
+  "devDependencies": {
+    "eslint": "^8.34.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.27.5"
+  }
+}
