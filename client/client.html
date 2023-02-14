@@ -16,7 +16,7 @@
           headers: {
             'Accept': typeElement.value
           },
-        }).then(response => console.log(response) === 'application/xml' ? response.text() : response.json()).then(body => {
+        }).then(response => response.headers.get("Content-Type") === 'application/xml' ? response.text() : response.json()).then(body => {
           console.log(body);
           let json;
           if (body.message) { //returned json
@@ -27,11 +27,11 @@
             const m1Index = body.indexOf('<message>');
             const m2Index = body.indexOf('</message>');
             if (m2Index > m1Index && m1Index !== -1) {
-              json.message = body.substring(m1Index.m2Index);
+              json.message = body.substring(m1Index, m2Index);
             }
             const i1Index = body.indexOf('<id>');
             const i2Index = body.indexOf('</id>');
-            if (i2Index>i1Index&&i1index!==-1) {
+            if (i2Index>i1Index&&i1Index!==-1) {
               json.id = body.substring(i1Index, i2Index);
             }
           }
