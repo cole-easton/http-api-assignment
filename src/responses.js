@@ -7,7 +7,7 @@ const stylesheet = fs.readFileSync(`${__dirname}/../client/style.css`);
 
 function getXMLorJSON(request, response, status, message, id) {
   const accept = request.headers.accept.split(',');
-  if (accept.indexOf('application/xml') !== -1 && (accept.indexOf('application/xml') < accept.indexOf('application/json'))) {
+  if (accept.indexOf('application/xml') !== -1 && (accept.indexOf('application/json') || (accept.indexOf('application/xml') < accept.indexOf('application/json')))) {
     response.writeHead(status, { 'Content-Type': 'application/xml' });
     if (request.method === 'GET') {
       response.write(`<message>${message}</message><id>${id}</id>`);
@@ -17,7 +17,7 @@ function getXMLorJSON(request, response, status, message, id) {
     if (request.method === 'GET') {
       response.write(`
       {
-        "message": "${message}"
+        "message": "${message}",
         "id": "${id}"
       }
       `);
@@ -44,7 +44,7 @@ const getStylesheet = (request, response) => {
 };
 
 const getSuccess = (request, response) => {
-  getSuccess(request, response, 200, 'Your request was successful!', 'OK');
+  getXMLorJSON(request, response, 200, 'Your request was successful!', 'OK');
 };
 
 const getBadRequest = (request, response) => {
