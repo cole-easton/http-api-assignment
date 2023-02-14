@@ -7,7 +7,7 @@ const stylesheet = fs.readFileSync(`${__dirname}/../client/style.css`);
 
 function getXMLorJSON(request, response, status, message, id) {
   const accept = request.headers.accept.split(',');
-  if (accept.indexOf('application/xml') !== -1 && (accept.indexOf('application/json') || (accept.indexOf('application/xml') < accept.indexOf('application/json')))) {
+  if (accept.indexOf('application/xml') !== -1 && (accept.indexOf('application/json') === -1 || (accept.indexOf('application/xml') < accept.indexOf('application/json')))) {
     response.writeHead(status, { 'Content-Type': 'application/xml' });
     if (request.method === 'GET') {
       response.write(`<message>${message}</message><id>${id}</id>`);
@@ -44,14 +44,14 @@ const getStylesheet = (request, response) => {
 };
 
 const getSuccess = (request, response) => {
-  getXMLorJSON(request, response, 200, 'Your request was successful!', 'OK');
+  getXMLorJSON(request, response, 200, 'This is a successful response.', 'OK');
 };
 
 const getBadRequest = (request, response) => {
   if (query.parse(url.parse(request.url).query).valid === 'true') {
-    getXMLorJSON(request, response, 200, 'Great, your bad request was valid somehow?', 'OK');
+    getXMLorJSON(request, response, 200, 'The request has the required parameters.', 'OK');
   } else {
-    getXMLorJSON(request, response, 400, 'Oops, looks like that was a bad request!', 'Bad Request');
+    getXMLorJSON(request, response, 400, 'Missing valid query parameter set to true.', 'Bad Request');
   }
 };
 
@@ -59,16 +59,16 @@ const getUnauthorized = (request, response) => {
   if (query.parse(url.parse(request.url).query).loggedIn === 'yes') {
     getXMLorJSON(request, response, 200, 'You are logged in and may view this page.', 'OK');
   } else {
-    getXMLorJSON(request, response, 401, "Missing loggedIn query parameter set to yes", 'Unauthorized');
+    getXMLorJSON(request, response, 401, 'Missing loggedIn query parameter set to yes.', 'Unauthorized');
   }
 };
 
 const getForbidden = (request, response) => {
-  getXMLorJSON(request, response, 403, "You do not have access to this content.", 'Forbidden');
+  getXMLorJSON(request, response, 403, 'You do not have access to this content.', 'Forbidden');
 };
 
 const getInternal = (request, response) => {
-  getXMLorJSON(request, response, 500, "Internal Service Error. Something went wrong.", 'Internal Server Error');
+  getXMLorJSON(request, response, 500, 'Internal Service Error. Something went wrong.', 'Internal Server Error');
 };
 
 const getNotImplemented = (request, response) => {
@@ -76,7 +76,7 @@ const getNotImplemented = (request, response) => {
 };
 
 const getNotFound = (request, response) => {
-  getXMLorJSON(request, response, 501, 'The page you ae looking for was not found.', 'Resource Not Found');
+  getXMLorJSON(request, response, 404, 'The page you ae looking for was not found.', 'Resource Not Found');
 };
 
 module.exports = {
