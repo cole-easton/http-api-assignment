@@ -59,41 +59,24 @@ const getUnauthorized = (request, response) => {
   if (query.parse(url.parse(request.url).query).loggedIn === 'yes') {
     getXMLorJSON(request, response, 200, 'You are logged in and may view this page.', 'OK');
   } else {
-    getXMLorJSON(request, response, 401, "Looks like you're signed out.  Please log in to view this page.", 'Unauthorized');
+    getXMLorJSON(request, response, 401, "Missing loggedIn query parameter set to yes", 'Unauthorized');
   }
 };
 
 const getForbidden = (request, response) => {
-  getXMLorJSON(request, response, 403, "You're not supposed to be here.", 'Forbidden');
+  getXMLorJSON(request, response, 403, "You do not have access to this content.", 'Forbidden');
 };
 
 const getInternal = (request, response) => {
-  getXMLorJSON(request, response, 500, "Sorry, this is all our fault :(", 'Internal Server Error');
+  getXMLorJSON(request, response, 500, "Internal Service Error. Something went wrong.", 'Internal Server Error');
 };
 
 const getNotImplemented = (request, response) => {
-  getXMLorJSON(request, response, 501, 'Looks like we messed up.', 'Not Implemented');
+  getXMLorJSON(request, response, 501, 'A get request for this page has not been implemented yet.', 'Not Implemented');
 };
 
 const getNotFound = (request, response) => {
-  response.writeHead(404, { 'Content-Type': 'text/html' });
-  if (request.method === 'GET') {
-    response.write(
-      `
-      <!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>404 Page Not Found</title>
-</head>
-<body>
-      <h1>Page Not Found</h1>
-      <p>The page you are looking for does not exist.</p>
-</body>
-</html>
-      `,
-    );
-  }
-  response.end();
+  getXMLorJSON(request, response, 501, 'The page you ae looking for was not found.', 'Resource Not Found');
 };
 
 module.exports = {
